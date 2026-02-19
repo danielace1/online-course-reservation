@@ -40,7 +40,7 @@ export const signup = async (req, res) => {
     generateToken(user, res);
 
     res.status(201).json({
-      message: "Registration successful",
+      message: "Registration successful.",
       user: {
         id: user._id,
         username: user.username,
