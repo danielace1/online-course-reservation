@@ -55,7 +55,11 @@ export const useAuthStore = create((set) => ({
 
   // LOGOUT
   logout: async () => {
-    await axiosInstance.post("/auth/logout");
+    try {
+      await axiosInstance.post("/auth/logout");
+    } catch (err) {
+      // ignore 401
+    }
     set({ user: null });
   },
 

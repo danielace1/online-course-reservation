@@ -9,15 +9,19 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      useAuthStore.getState().logout();
-      window.location.href = "/login";
-    }
-    return Promise.reject(error);
-  },
-);
+// axiosInstance.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     if (
+//       error.response?.status === 401 &&
+//       !error.config.url.includes("/auth/logout") &&
+//       !error.config.url.includes("/auth/login")
+//     ) {
+//       useAuthStore.getState().logout();
+//       window.location.href = "/login";
+//     }
+//     return Promise.reject(error);
+//   },
+// );
 
 export default axiosInstance;
