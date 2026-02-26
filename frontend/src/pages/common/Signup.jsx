@@ -69,7 +69,7 @@ const Signup = () => {
             <h2 className="text-5xl font-bold leading-tight">
               Start Your Learning Journey.
             </h2>
-            <p className="text-gray-400 mt-6 text-lg">
+            <p className="text-gray-400 mt-3 text-lg">
               Create your account and unlock thousands of premium courses.
             </p>
           </div>

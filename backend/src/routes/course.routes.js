@@ -13,9 +13,9 @@ import {
 
 const router = express.Router();
 
-router.get("/", getAllCourses);
-
 router.get("/instructor", authMiddleware, getInstructorCourses);
+
+router.get("/", getAllCourses);
 
 router.get("/:id", getCourseById);
 

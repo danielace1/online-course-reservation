@@ -109,7 +109,7 @@ const Login = () => {
               </button>
             </div>
 
-            <div className="flex justify-end text-sm">
+            <div className="flex justify-end text-sm -mt-3">
               <Link
                 to="/forgot-password"
                 className="text-purple-400 hover:text-purple-300 cursor-pointer transition"
