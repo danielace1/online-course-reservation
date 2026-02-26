@@ -1,13 +1,12 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Mail, Lock, User, BookOpen } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuthStore } from "../../store/useAuthStore";
 import FormInput from "../../components/FormInput";
-
-/* ---------------- ZOD SCHEMA ---------------- */
 
 const signupSchema = z
   .object({
@@ -15,7 +14,7 @@ const signupSchema = z
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string(),
-    role: z.enum(["student", "teacher"]),
+    role: z.enum(["student", "instructor"]),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -24,6 +23,8 @@ const signupSchema = z
 
 const Signup = () => {
   const [selectedRole, setSelectedRole] = useState("student");
+  const { signup, isLoading, error } = useAuthStore();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -37,8 +38,27 @@ const Signup = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log("Signup Data:", data);
+  const onSubmit = async (data) => {
+    const payload = {
+      username: data.name,
+      email: data.email,
+      password: data.password,
+      role: data.role,
+    };
+
+    const res = await signup(payload);
+
+    if (res.success) {
+      const user = useAuthStore.getState().user;
+
+      if (user.role === "student") {
+        navigate("/courses");
+      } else if (user.role === "instructor") {
+        navigate("/instructor/dashboard");
+      } else if (user.role === "admin") {
+        navigate("/admin/dashboard");
+      }
+    }
   };
 
   const handleRoleSelect = (role) => {
@@ -58,18 +78,20 @@ const Signup = () => {
           initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-xl space-y-10"
+          className="max-w-xl space-y-8"
         >
-          <div className="flex items-center gap-3">
-            <BookOpen size={36} className="text-purple-500" />
-            <h1 className="text-2xl font-semibold">Learnify</h1>
+          <div className="">
+            <Link to="/" className="flex items-center gap-x-3">
+              <BookOpen size={36} className="text-purple-500" />
+              <h1 className="text-2xl font-semibold tracking-wide">Learnify</h1>
+            </Link>
           </div>
 
           <div>
             <h2 className="text-5xl font-bold leading-tight">
               Start Your Learning Journey.
             </h2>
-            <p className="text-gray-400 mt-6 text-lg">
+            <p className="text-gray-400 mt-3 text-lg">
               Create your account and unlock thousands of premium courses.
             </p>
           </div>
@@ -159,14 +181,14 @@ const Signup = () => {
 
                 <button
                   type="button"
-                  onClick={() => handleRoleSelect("teacher")}
+                  onClick={() => handleRoleSelect("instructor")}
                   className={`py-3 rounded-xl border transition cursor-pointer ${
-                    selectedRole === "teacher"
+                    selectedRole === "instructor"
                       ? "bg-purple-600 border-purple-500"
                       : "border-gray-700 hover:border-purple-500"
                   }`}
                 >
-                  Teacher
+                  Instructor
                 </button>
               </div>
 
@@ -177,11 +199,16 @@ const Signup = () => {
               )}
             </div>
 
+            {error && (
+              <p className="text-red-400 text-sm text-center -mt-2">{error}</p>
+            )}
+
             <button
               type="submit"
-              className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl font-semibold hover:shadow-xl hover:scale-[1.02] transition-all cursor-pointer"
+              disabled={isLoading}
+              className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl font-semibold hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
-              Create Account
+              {isLoading ? "Creating Account..." : "Create Account"}
             </button>
           </form>
 

@@ -161,9 +161,19 @@ export const getAllCourses = async (req, res) => {
   }
 };
 
+import mongoose from "mongoose";
+
 export const getCourseById = async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id).populate(
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        message: "Invalid Course ID",
+      });
+    }
+
+    const course = await Course.findById(id).populate(
       "instructor",
       "username profilePic bio",
     );

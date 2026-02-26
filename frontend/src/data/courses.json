@@ -1,0 +1,202 @@
+[
+  {
+    "title": "Complete Web Development Bootcamp",
+    "headline": "Learn HTML, CSS, JavaScript, React and Node.js from scratch.",
+    "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+    "category": "Development",
+    "rating": 4.7,
+    "num_subscribers": 45231,
+    "content_info_short": "42 hours",
+    "instructional_level_simple": "Beginner"
+  },
+  {
+    "title": "Mastering React.js",
+    "headline": "Build dynamic web applications using React and hooks.",
+    "image": "https://images.unsplash.com/photo-1633356122544-f134324a6cee",
+    "category": "Frontend",
+    "rating": 4.8,
+    "num_subscribers": 38921,
+    "content_info_short": "28 hours",
+    "instructional_level_simple": "Intermediate"
+  },
+  {
+    "title": "Node.js & Express API Development",
+    "headline": "Create scalable backend APIs with Node and Express.",
+    "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31",
+    "category": "Backend",
+    "rating": 4.6,
+    "num_subscribers": 27450,
+    "content_info_short": "24 hours",
+    "instructional_level_simple": "Intermediate"
+  },
+  {
+    "title": "UI/UX Design Fundamentals",
+    "headline": "Design beautiful and user-friendly interfaces.",
+    "image": "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c",
+    "category": "Design",
+    "rating": 4.5,
+    "num_subscribers": 19832,
+    "content_info_short": "18 hours",
+    "instructional_level_simple": "Beginner"
+  },
+  {
+    "title": "Python for Beginners",
+    "headline": "Start coding in Python with hands-on exercises.",
+    "image": "https://images.unsplash.com/photo-1515879218367-8466d910aaa4",
+    "category": "Programming",
+    "rating": 4.8,
+    "num_subscribers": 51234,
+    "content_info_short": "30 hours",
+    "instructional_level_simple": "Beginner"
+  },
+  {
+    "title": "Data Science & Machine Learning",
+    "headline": "Analyze data and build machine learning models.",
+    "image": "https://images.unsplash.com/photo-1555949963-aa79dcee981c",
+    "category": "Data Science",
+    "rating": 4.9,
+    "num_subscribers": 61230,
+    "content_info_short": "50 hours",
+    "instructional_level_simple": "Advanced"
+  },
+  {
+    "title": "Flutter App Development",
+    "headline": "Build beautiful cross-platform mobile apps with Flutter.",
+    "image": "https://images.unsplash.com/photo-1617042375876-a13e36732a04",
+    "category": "Mobile Development",
+    "rating": 4.6,
+    "num_subscribers": 21045,
+    "content_info_short": "26 hours",
+    "instructional_level_simple": "Intermediate"
+  },
+  {
+    "title": "Digital Marketing Masterclass",
+    "headline": "Grow businesses using SEO, ads and social media marketing.",
+    "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
+    "category": "Marketing",
+    "rating": 4.4,
+    "num_subscribers": 33450,
+    "content_info_short": "22 hours",
+    "instructional_level_simple": "Beginner"
+  },
+  {
+    "title": "Cybersecurity Essentials",
+    "headline": "Learn ethical hacking and network security basics.",
+    "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b",
+    "category": "Security",
+    "rating": 4.7,
+    "num_subscribers": 28900,
+    "content_info_short": "20 hours",
+    "instructional_level_simple": "Intermediate"
+  },
+  {
+    "title": "AWS Cloud Practitioner",
+    "headline": "Understand AWS core services and cloud fundamentals.",
+    "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa",
+    "category": "Cloud",
+    "rating": 4.6,
+    "num_subscribers": 30210,
+    "content_info_short": "19 hours",
+    "instructional_level_simple": "Beginner"
+  },
+  {
+    "title": "Next.js Full Stack Development",
+    "headline": "Build modern full-stack apps using Next.js and MongoDB.",
+    "image": "https://images.unsplash.com/photo-1618477247222-acbdb0e159b3",
+    "category": "Full Stack",
+    "rating": 4.8,
+    "num_subscribers": 17890,
+    "content_info_short": "32 hours",
+    "instructional_level_simple": "Intermediate"
+  },
+  {
+    "title": "Graphic Design with Photoshop",
+    "headline": "Create stunning graphics and social media designs.",
+    "image": "https://images.unsplash.com/photo-1572044162444-ad60f128bdea",
+    "category": "Design",
+    "rating": 4.5,
+    "num_subscribers": 25430,
+    "content_info_short": "16 hours",
+    "instructional_level_simple": "Beginner"
+  },
+  {
+    "title": "Java Programming Masterclass",
+    "headline": "Comprehensive guide to Java programming language.",
+    "image": "https://images.unsplash.com/photo-1581091870627-3b5de9a8b5a2",
+    "category": "Programming",
+    "rating": 4.6,
+    "num_subscribers": 34120,
+    "content_info_short": "40 hours",
+    "instructional_level_simple": "Intermediate"
+  },
+  {
+    "title": "iOS App Development with Swift",
+    "headline": "Build real-world iOS apps using Swift and Xcode.",
+    "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
+    "category": "Mobile Development",
+    "rating": 4.7,
+    "num_subscribers": 22110,
+    "content_info_short": "29 hours",
+    "instructional_level_simple": "Intermediate"
+  },
+  {
+    "title": "Blockchain Fundamentals",
+    "headline": "Understand blockchain technology and smart contracts.",
+    "image": "https://images.unsplash.com/photo-1639322537228-f710d846310a",
+    "category": "Blockchain",
+    "rating": 4.3,
+    "num_subscribers": 14980,
+    "content_info_short": "14 hours",
+    "instructional_level_simple": "Beginner"
+  },
+  {
+    "title": "SQL & Database Management",
+    "headline": "Master SQL queries and relational databases.",
+    "image": "https://images.unsplash.com/photo-1544383835-33bafc3a9e6d",
+    "category": "Database",
+    "rating": 4.6,
+    "num_subscribers": 28765,
+    "content_info_short": "21 hours",
+    "instructional_level_simple": "Beginner"
+  },
+  {
+    "title": "Artificial Intelligence Basics",
+    "headline": "Introduction to AI concepts and neural networks.",
+    "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995",
+    "category": "AI",
+    "rating": 4.8,
+    "num_subscribers": 36789,
+    "content_info_short": "34 hours",
+    "instructional_level_simple": "Advanced"
+  },
+  {
+    "title": "Video Editing with Premiere Pro",
+    "headline": "Edit professional videos using Adobe Premiere Pro.",
+    "image": "https://images.unsplash.com/photo-1492724441997-5dc865305da8",
+    "category": "Multimedia",
+    "rating": 4.5,
+    "num_subscribers": 19234,
+    "content_info_short": "17 hours",
+    "instructional_level_simple": "Beginner"
+  },
+  {
+    "title": "DevOps with Docker & Kubernetes",
+    "headline": "Containerize and deploy applications efficiently.",
+    "image": "https://images.unsplash.com/photo-1605379399642-870262d3d051",
+    "category": "DevOps",
+    "rating": 4.7,
+    "num_subscribers": 26345,
+    "content_info_short": "27 hours",
+    "instructional_level_simple": "Advanced"
+  },
+  {
+    "title": "Excel for Business & Finance",
+    "headline": "Master Excel formulas, pivot tables and dashboards.",
+    "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f",
+    "category": "Business",
+    "rating": 4.4,
+    "num_subscribers": 31021,
+    "content_info_short": "15 hours",
+    "instructional_level_simple": "Beginner"
+  }
+]
