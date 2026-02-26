@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Mail, Lock, Eye, EyeOff, BookOpen } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "../../components/FormInput";
+import { useAuthStore } from "../../store/useAuthStore";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -14,6 +15,8 @@ const loginSchema = z.object({
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const { login, isLoading, error } = useAuthStore();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -23,10 +26,21 @@ const Login = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const onSubmit = async (data) => {
+    const res = await login(data);
 
+    if (res.success) {
+      const user = useAuthStore.getState().user;
+
+      if (user.role === "student") {
+        navigate("/courses");
+      } else if (user.role === "instructor") {
+        navigate("/instructor/dashboard");
+      } else if (user.role === "admin") {
+        navigate("/admin/dashboard");
+      }
+    }
+  };
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-[#0f0c29] via-[#1a1a3a] to-[#0f0c29] text-white relative overflow-hidden ">
       {/* Glow Effects */}
@@ -42,9 +56,11 @@ const Login = () => {
           className="max-w-xl space-y-10"
         >
           {/* Logo */}
-          <div className="mt-4 flex items-center gap-3">
-            <BookOpen size={36} className="text-purple-500" />
-            <h1 className="text-2xl font-semibold tracking-wide">Learnify</h1>
+          <div className="mt-4">
+            <Link to="/" className="flex items-center gap-3">
+              <BookOpen size={36} className="text-purple-500" />
+              <h1 className="text-2xl font-semibold tracking-wide">Learnify</h1>
+            </Link>
           </div>
 
           <div>
@@ -100,6 +116,12 @@ const Login = () => {
                 {...register("password")}
               />
 
+              {error && (
+                <p className="text-red-400 text-sm text-center -mt-2">
+                  {error}
+                </p>
+              )}
+
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
@@ -120,9 +142,10 @@ const Login = () => {
 
             <button
               type="submit"
-              className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl font-semibold hover:shadow-xl hover:scale-[1.02] transition-all cursor-pointer"
+              disabled={isLoading}
+              className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl font-semibold hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
-              Login
+              {isLoading ? "Logging in..." : "Login"}
             </button>
 
             {/* Divider */}

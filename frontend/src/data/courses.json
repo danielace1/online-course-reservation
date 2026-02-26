@@ -112,7 +112,7 @@
   {
     "title": "Graphic Design with Photoshop",
     "headline": "Create stunning graphics and social media designs.",
-    "image": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0",
+    "image": "https://images.unsplash.com/photo-1572044162444-ad60f128bdea",
     "category": "Design",
     "rating": 4.5,
     "num_subscribers": 25430,
@@ -122,7 +122,7 @@
   {
     "title": "Java Programming Masterclass",
     "headline": "Comprehensive guide to Java programming language.",
-    "image": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f",
+    "image": "https://images.unsplash.com/photo-1581091870627-3b5de9a8b5a2",
     "category": "Programming",
     "rating": 4.6,
     "num_subscribers": 34120,
@@ -152,7 +152,7 @@
   {
     "title": "SQL & Database Management",
     "headline": "Master SQL queries and relational databases.",
-    "image": "https://images.unsplash.com/photo-1544383835-bda2bc66a55d",
+    "image": "https://images.unsplash.com/photo-1544383835-33bafc3a9e6d",
     "category": "Database",
     "rating": 4.6,
     "num_subscribers": 28765,
@@ -162,7 +162,7 @@
   {
     "title": "Artificial Intelligence Basics",
     "headline": "Introduction to AI concepts and neural networks.",
-    "image": "https://images.unsplash.com/photo-1507146426996-ef05306b995a",
+    "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995",
     "category": "AI",
     "rating": 4.8,
     "num_subscribers": 36789,
@@ -172,7 +172,7 @@
   {
     "title": "Video Editing with Premiere Pro",
     "headline": "Edit professional videos using Adobe Premiere Pro.",
-    "image": "https://images.unsplash.com/photo-1492724441997-5dc865305da7",
+    "image": "https://images.unsplash.com/photo-1492724441997-5dc865305da8",
     "category": "Multimedia",
     "rating": 4.5,
     "num_subscribers": 19234,
@@ -182,7 +182,7 @@
   {
     "title": "DevOps with Docker & Kubernetes",
     "headline": "Containerize and deploy applications efficiently.",
-    "image": "https://images.unsplash.com/photo-1605745341112-85968b19335b",
+    "image": "https://images.unsplash.com/photo-1605379399642-870262d3d051",
     "category": "DevOps",
     "rating": 4.7,
     "num_subscribers": 26345,
