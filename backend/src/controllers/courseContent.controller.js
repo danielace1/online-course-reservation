@@ -1,5 +1,6 @@
 import CourseContent from "../models/courseContent.model.js";
 import Course from "../models/course.model.js";
+import cloudinary from "../utils/cloudinary.js";
 
 export const addCourseContent = async (req, res) => {
   try {
@@ -7,6 +8,7 @@ export const addCourseContent = async (req, res) => {
       courseId,
       title,
       type,
+      contentFile,
       contentUrl,
       order,
       maxMarks,
@@ -16,13 +18,12 @@ export const addCourseContent = async (req, res) => {
 
     let finalContentUrl = contentUrl || "";
 
-    if (req.file) {
-      const uploaded = await uploadToCloudinary(
-        req.file.path,
-        "online-course-system/course-contents",
-      );
+    if (contentFile) {
+      const uploaded = await cloudinary.uploader.upload(contentFile, {
+        folder: "online-course-system/course-contents",
+      });
 
-      finalContentUrl = uploaded.url;
+      finalContentUrl = uploaded.secure_url;
     }
 
     const content = await CourseContent.create({
@@ -59,6 +60,7 @@ export const updateCourseContent = async (req, res) => {
     const {
       title,
       type,
+      contentFile,
       contentUrl,
       order,
       maxMarks,
@@ -76,13 +78,12 @@ export const updateCourseContent = async (req, res) => {
 
     let finalContentUrl = content.contentUrl;
 
-    if (req.file) {
-      const uploaded = await uploadToCloudinary(
-        req.file.path,
-        "online-course-system/course-contents",
-      );
+    if (contentFile) {
+      const uploaded = await cloudinary.uploader.upload(contentFile, {
+        folder: "online-course-system/course-contents",
+      });
 
-      finalContentUrl = uploaded.url;
+      finalContentUrl = uploaded.secure_url;
     } else if (contentUrl) {
       finalContentUrl = contentUrl;
     }

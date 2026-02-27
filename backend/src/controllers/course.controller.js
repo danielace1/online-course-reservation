@@ -1,12 +1,20 @@
 import Course from "../models/course.model.js";
+import cloudinary from "../utils/cloudinary.js";
 import CourseContent from "../models/courseContent.model.js";
-import uploadToCloudinary from "../utils/uploadToCloudinary.js";
 import slugify from "slugify";
 
 export const createCourse = async (req, res) => {
   try {
-    const { title, description, category, duration, level, fee, discount } =
-      req.body;
+    const {
+      title,
+      description,
+      category,
+      duration,
+      level,
+      fee,
+      discount,
+      image,
+    } = req.body;
 
     if (!title || !description || !category || !duration || !fee) {
       return res.status(400).json({
@@ -16,13 +24,12 @@ export const createCourse = async (req, res) => {
 
     let imageUrl = "";
 
-    if (req.file) {
-      const uploaded = await uploadToCloudinary(
-        req.file.path,
-        "online-course-system/courses",
-      );
+    if (image) {
+      const uploaded = await cloudinary.uploader.upload(image, {
+        folder: "online-course-system/courses",
+      });
 
-      imageUrl = uploaded.url;
+      imageUrl = uploaded.secure_url;
     }
 
     // calculate final fee
@@ -39,7 +46,7 @@ export const createCourse = async (req, res) => {
       description,
       category,
       duration,
-      level,
+      level: level?.toLowerCase(),
       discount,
       fee,
       finalFee,
@@ -63,8 +70,16 @@ export const updateCourse = async (req, res) => {
   try {
     const courseId = req.params.id;
 
-    const { title, description, category, duration, level, fee, discount } =
-      req.body;
+    const {
+      title,
+      description,
+      category,
+      duration,
+      level,
+      fee,
+      discount,
+      image,
+    } = req.body;
 
     const course = await Course.findById(courseId);
 
@@ -83,13 +98,12 @@ export const updateCourse = async (req, res) => {
 
     let imageUrl = course.image;
 
-    if (req.file) {
-      const uploaded = await uploadToCloudinary(
-        req.file.path,
-        "online-course-system/courses",
-      );
+    if (image) {
+      const uploaded = await cloudinary.uploader.upload(image, {
+        folder: "online-course-system/courses",
+      });
 
-      imageUrl = uploaded.url;
+      imageUrl = uploaded.secure_url;
     }
 
     // calculate final fee
@@ -105,7 +119,7 @@ export const updateCourse = async (req, res) => {
         description,
         category,
         duration,
-        level,
+        level: level?.toLowerCase(),
         fee,
         discount,
         finalFee,
@@ -160,8 +174,6 @@ export const getAllCourses = async (req, res) => {
     });
   }
 };
-
-import mongoose from "mongoose";
 
 export const getCourseById = async (req, res) => {
   try {

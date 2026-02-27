@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import cloudinary from "../utils/cloudinary.js";
 import generateToken from "../utils/generateToken.js";
-import uploadToCloudinary from "../utils/uploadToCloudinary.js";
 
 export const signup = async (req, res) => {
   try {
@@ -105,19 +105,18 @@ export const login = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const { username, bio } = req.body;
+    const { username, bio, image } = req.body;
 
     let updateData = {
       username,
       bio,
     };
 
-    if (req.file) {
-      const uploaded = await uploadToCloudinary(
-        req.file.path,
-        "online-course-system/profile-pics",
-      );
-      updateData.profilePic = uploaded.url;
+    if (image) {
+      const uploaded = await cloudinary.uploader.upload(image, {
+        folder: "online-course-system/profile-pics",
+      });
+      updateData.profilePic = uploaded.secure_url;
     }
 
     const user = await User.findByIdAndUpdate(req.user.id, updateData, {
