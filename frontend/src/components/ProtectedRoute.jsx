@@ -1,4 +1,4 @@
-import { Navigate } from "react-router";
+import { Navigate, Outlet } from "react-router";
 import { useAuthStore } from "../store/useAuthStore";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -14,7 +14,9 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     return <Navigate to="/" replace />;
   }
 
-  return children;
+  if (children) return children;
+
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

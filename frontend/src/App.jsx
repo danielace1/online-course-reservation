@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router";
 import { useAuthStore } from "./store/useAuthStore";
+import { Toaster } from "react-hot-toast";
 
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -15,6 +16,10 @@ import About from "./pages/common/About";
 import StudentDashboard from "./pages/student/StudentDashboard";
 import InstructorDashboard from "./pages/instructor/InstructorDashboard";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import CreateCourse from "./pages/instructor/CreateCourse";
+import InstructorLayout from "./layouts/InstructorLayout";
+import InstructorCourses from "./pages/instructor/InstructorCourses";
+import AddCourseContent from "./pages/instructor/AddCourseContent";
 
 const App = () => {
   const { checkAuth } = useAuthStore();
@@ -24,15 +29,14 @@ const App = () => {
     checkAuth();
   }, []);
 
-  const authRoutes = [
-    "/login",
-    "/signup",
-    "/student/dashboard",
-    "/instructor/dashboard",
-    "/admin/dashboard",
-  ];
-  const hideNavbar = authRoutes.includes(location.pathname);
-  const hideFooter = authRoutes.includes(location.pathname);
+  const authRoutes = ["/login", "/signup"];
+  const dashboardRoutes = ["/student", "/instructor", "/admin"];
+
+  const hideNavbar =
+    authRoutes.includes(location.pathname) ||
+    dashboardRoutes.some((route) => location.pathname.startsWith(route));
+
+  const hideFooter = hideNavbar;
 
   return (
     <>
@@ -57,13 +61,22 @@ const App = () => {
 
         {/* Instructor Dashboard */}
         <Route
-          path="/instructor/dashboard"
           element={
             <ProtectedRoute allowedRoles={["instructor"]}>
-              <InstructorDashboard />
+              <InstructorLayout />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route
+            path="/instructor/dashboard"
+            element={<InstructorDashboard />}
+          />
+          <Route path="/instructor/courses" element={<InstructorCourses />} />
+          <Route
+            path="/instructor/courses/:courseId/add-content"
+            element={<AddCourseContent />}
+          />
+        </Route>
 
         {/* Admin Dashboard */}
         <Route
@@ -77,6 +90,8 @@ const App = () => {
       </Routes>
 
       {!hideFooter && <Footer />}
+
+      <Toaster />
     </>
   );
 };
