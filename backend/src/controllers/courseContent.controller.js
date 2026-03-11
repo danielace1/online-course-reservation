@@ -11,6 +11,7 @@ export const addCourseContent = async (req, res) => {
       description,
       type,
       contentFile,
+      duration,
       thumbnailFile,
       contentUrl,
       order,
@@ -47,6 +48,7 @@ export const addCourseContent = async (req, res) => {
       type,
       contentUrl: finalContentUrl,
       thumbnail: thumbnailUrl,
+      duration,
       order,
       maxMarks,
       weightage,
@@ -80,6 +82,7 @@ export const updateCourseContent = async (req, res) => {
       contentFile,
       thumbnailFile,
       contentUrl,
+      duration,
       order,
       maxMarks,
       weightage,
@@ -127,6 +130,7 @@ export const updateCourseContent = async (req, res) => {
         maxMarks,
         weightage,
         isFreePreview,
+        duration,
       },
       { new: true },
     );
@@ -145,51 +149,35 @@ export const updateCourseContent = async (req, res) => {
 export const getCourseContents = async (req, res) => {
   try {
     const { courseId } = req.params;
-
-    let isPurchased = false;
-    let isInstructor = false;
-
     const course = await Course.findById(courseId);
 
-    if (!course) {
-      return res.status(404).json({
-        message: "Course not found",
-      });
-    }
+    if (!course) return res.status(404).json({ message: "Course not found" });
 
-    // Instructor check
-    if (req.user && course.instructor.toString() === req.user._id.toString()) {
-      isInstructor = true;
-    }
+    let isInstructor =
+      req.user && course.instructor.toString() === req.user._id.toString();
+    let isPurchased = false;
 
-    // Purchased check
     if (req.user && !isInstructor) {
       const reservation = await Reservation.findOne({
         student: req.user._id,
         course: courseId,
         status: "active",
       });
-
-      if (reservation) {
-        isPurchased = true;
-      }
+      if (reservation) isPurchased = true;
     }
 
     let contents;
-
     if (isInstructor || isPurchased) {
-      // Full lecture list but without file URL
-      contents = await CourseContent.find({ course: courseId })
-        .select("-contentUrl") // hide actual file
-        .sort({ order: 1 });
+      // REMOVE .select("-contentUrl") here so the player gets the link
+      contents = await CourseContent.find({ course: courseId }).sort({
+        order: 1,
+      });
     } else {
-      // Only preview lectures
+      // For non-purchased users, only show previews WITH the URL so they can actually preview
       contents = await CourseContent.find({
         course: courseId,
         isFreePreview: true,
-      })
-        .select("-contentUrl")
-        .sort({ order: 1 });
+      }).sort({ order: 1 });
     }
 
     res.status(200).json({
@@ -199,9 +187,7 @@ export const getCourseContents = async (req, res) => {
       contents,
     });
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    res.status(500).json({ message: error.message });
   }
 };
 

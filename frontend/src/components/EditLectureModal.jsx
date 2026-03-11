@@ -11,6 +11,7 @@ const EditLectureModal = ({ lecture, close }) => {
     description: lecture?.description || "",
     type: lecture?.type || "video",
     contentUrl: lecture?.contentUrl || "",
+    duration: lecture?.duration || "",
     order: lecture?.order ?? 1,
     maxMarks: lecture?.maxMarks ?? 0,
     weightage: lecture?.weightage ?? 0,
@@ -126,14 +127,29 @@ const EditLectureModal = ({ lecture, close }) => {
           </div>
 
           {/* TITLE */}
-          <div>
-            <label className={labelStyle}>Lecture Title</label>
-
-            <input
-              value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
-              className={inputStyle}
-            />
+          <div className="grid grid-cols-4 gap-4">
+            <div className="col-span-3">
+              <label className={labelStyle}>Lecture Title</label>
+              <input
+                value={form.title}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+                className={inputStyle}
+                placeholder="Enter lecture title"
+              />
+            </div>
+            <div className="col-span-1">
+              <label className={labelStyle}>Duration</label>
+              <div className="relative">
+                <input
+                  value={form.duration}
+                  onChange={(e) =>
+                    setForm({ ...form, duration: e.target.value })
+                  }
+                  className={inputStyle}
+                  placeholder="10:00"
+                />
+              </div>
+            </div>
           </div>
 
           {/* DESCRIPTION */}

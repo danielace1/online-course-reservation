@@ -10,6 +10,7 @@ import {
   FileVideo,
   FileText,
   Link as LinkIcon,
+  Clock,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import FormInput from "../../components/FormInput";
@@ -27,6 +28,7 @@ const contentSchema = z
     maxMarks: z.string().optional(),
     weightage: z.string().optional(),
     contentUrl: z.string().optional(),
+    duration: z.string().min(1, "Duration required (e.g. 10:00)"),
     thumbnailUrl: z.string().optional(),
     isFreePreview: z.boolean().optional(),
   })
@@ -73,6 +75,7 @@ const AddCourseContent = () => {
       type: "video",
       order: 1,
       description: "",
+      duration: "",
       maxMarks: "",
       weightage: "",
       isFreePreview: false,
@@ -181,12 +184,27 @@ const AddCourseContent = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           {/* ---------- BASIC INFO ---------- */}
           <div className="space-y-6">
-            <FormInput
-              label="Lecture Title"
-              variant="light"
-              error={errors.title}
-              {...register("title")}
-            />
+            <div className="grid md:grid-cols-4 gap-6">
+              <div className="md:col-span-3">
+                <FormInput
+                  label="Lecture Title"
+                  variant="light"
+                  error={errors.title}
+                  {...register("title")}
+                />
+              </div>
+
+              {/* NEW DURATION FIELD */}
+              <div className="md:col-span-1">
+                <FormInput
+                  label="Duration (mins)"
+                  placeholder="e.g. 15:30"
+                  variant="light"
+                  error={errors.duration}
+                  {...register("duration")}
+                />
+              </div>
+            </div>
 
             <div>
               <label className="text-sm text-gray-600 mb-1 block">
@@ -432,6 +450,10 @@ const AddCourseContent = () => {
 
                     <div className="flex gap-3 mt-1 text-xs text-gray-500">
                       <span className="capitalize">{lecture.type}</span>
+                      <span>•</span>
+                      <span className="flex items-center gap-1">
+                        <Clock size={12} /> {lecture.duration || "N/A"}
+                      </span>
                       {lecture.isFreePreview && (
                         <span className="text-green-600 font-medium">
                           Free Preview

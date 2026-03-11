@@ -6,9 +6,16 @@ export const useCourseStore = create((set) => ({
   isLoading: false,
   error: null,
   course: null,
+  purchased: false,
+  activeLecture: null,
+  userProgress: null,
+  instructorStats: null,
+  dashboardData: null,
+  isIssuingCertificate: false,
+
   courses: [],
   contents: [],
-  purchased: false,
+  instructorStudents: [],
 
   getAllCourses: async () => {
     try {
@@ -88,8 +95,11 @@ export const useCourseStore = create((set) => ({
 
       set({
         contents: res.data.contents,
+        activeLecture: res.data.contents[0] || null,
         isLoading: false,
       });
+
+      // console.log(res.data.contents);
     } catch (error) {
       const message =
         error.response?.data?.message || "Failed to fetch contents";
@@ -98,6 +108,8 @@ export const useCourseStore = create((set) => ({
       toast.error(message);
     }
   },
+
+  setActiveLecture: (lecture) => set({ activeLecture: lecture }),
 
   fetchCourseById: async (courseId) => {
     try {
@@ -217,6 +229,82 @@ export const useCourseStore = create((set) => ({
       return res.data;
     } catch (error) {
       toast.error("Failed to fetch enrolled courses");
+    }
+  },
+
+  // track progress
+  fetchMyProgress: async (courseId) => {
+    try {
+      const res = await axiosInstance.get(`/progress/course/${courseId}`);
+      set({ userProgress: res.data });
+    } catch (error) {
+      console.error("Failed to fetch progress", error);
+      set({ userProgress: null });
+    }
+  },
+
+  updateLessonProgress: async (courseId, contentId) => {
+    try {
+      const res = await axiosInstance.patch(`/progress/course/${courseId}`, {
+        contentId,
+      });
+
+      set({ userProgress: res.data.progress });
+      toast.success("Lesson completed!");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to update progress");
+    }
+  },
+
+  // issue certificate
+  issueCertificate: async (courseId) => {
+    try {
+      set({ isIssuingCertificate: true });
+      const res = await axiosInstance.post(`/certificates/course/${courseId}`);
+      toast.success("Certificate issued! Check your email.");
+      set({ isIssuingCertificate: false });
+      return res.data;
+    } catch (error) {
+      set({ isIssuingCertificate: false });
+      toast.error(
+        error.response?.data?.message || "Failed to issue certificate",
+      );
+      return null;
+    }
+  },
+
+  // student dashboard
+  fetchStudentDashboard: async () => {
+    try {
+      set({ isLoading: true });
+      const res = await axiosInstance.get("/student/dashboard");
+      set({ dashboardData: res.data, isLoading: false });
+    } catch (error) {
+      set({ isLoading: false });
+      toast.error("Failed to load dashboard data");
+    }
+  },
+
+  // instructor dashboard
+  fetchInstructorStats: async () => {
+    try {
+      set({ isLoading: true });
+      const res = await axiosInstance.get("/instructor/stats");
+      set({ instructorStats: res.data, isLoading: false });
+    } catch (error) {
+      set({ isLoading: false });
+      toast.error("Failed to load dashboard statistics");
+    }
+  },
+
+  fetchInstructorStudents: async () => {
+    try {
+      set({ isLoading: true });
+      const res = await axiosInstance.get("/instructor/my-students");
+      set({ instructorStudents: res.data, isLoading: false });
+    } catch (error) {
+      set({ isLoading: false });
+      toast.error("Failed to fetch student data");
     }
   },
 }));

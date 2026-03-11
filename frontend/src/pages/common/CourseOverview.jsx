@@ -198,7 +198,7 @@ const CourseOverview = () => {
 
               {purchased ? (
                 <button
-                  onClick={() => navigate(`/student/my-courses/${course._id}`)}
+                  onClick={() => navigate(`/student/course/${course._id}`)}
                   className="w-full py-3 rounded-lg bg-green-600 hover:bg-green-700 transition font-semibold shadow-lg cursor-pointer"
                 >
                   Continue Learning

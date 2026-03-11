@@ -1,5 +1,6 @@
 import Reservation from "../models/reservation.model.js";
 import Course from "../models/course.model.js";
+import Progress from "../models/progress.model.js";
 import mongoose from "mongoose";
 
 // Enroll / Reserve Course
@@ -58,7 +59,23 @@ export const getMyReservations = async (req, res) => {
       status: "active",
     }).populate("course");
 
-    res.status(200).json(reservations);
+    const enhancedReservations = await Promise.all(
+      reservations.map(async (resv) => {
+        const progressRecord = await Progress.findOne({
+          student: req.user._id,
+          course: resv.course._id,
+        });
+
+        return {
+          ...resv._doc,
+          completedPercentage: progressRecord
+            ? progressRecord.completedPercentage
+            : 0,
+        };
+      }),
+    );
+
+    res.status(200).json(enhancedReservations);
   } catch (error) {
     console.log("Error in getMyReservations:", error);
     res.status(500).json({
