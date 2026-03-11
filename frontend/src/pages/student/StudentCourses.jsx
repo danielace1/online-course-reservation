@@ -15,7 +15,7 @@ const StudentCourses = () => {
     };
 
     loadCourses();
-  }, []);
+  }, [getMyCourses]);
 
   return (
     <div className="space-y-8">
@@ -24,7 +24,7 @@ const StudentCourses = () => {
       <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-8 transition">
         {courses.map((item, index) => {
           const course = item.course;
-          const progress = item.progress || 0;
+          const progress = Math.round(item.completedPercentage || 0);
 
           return (
             <motion.div
@@ -44,12 +44,14 @@ const StudentCourses = () => {
               "
             >
               {/* IMAGE */}
-
               <div className="relative transition-all">
-                <img src={course.image} className="w-full h-48 object-cover" />
+                <img
+                  src={course.image}
+                  className="w-full h-48 object-cover"
+                  alt={course.title}
+                />
 
                 {/* CATEGORY BADGE */}
-
                 <span
                   className="
                   absolute top-3 left-3
@@ -67,13 +69,11 @@ const StudentCourses = () => {
 
               <div className="p-6 space-y-4">
                 {/* TITLE */}
-
                 <h3 className="text-lg font-semibold line-clamp-2">
                   {course.title}
                 </h3>
 
                 {/* COURSE META */}
-
                 <div className="flex items-center justify-between text-xs text-gray-500">
                   <div className="flex items-center gap-1">
                     <Clock size={14} />
@@ -87,7 +87,6 @@ const StudentCourses = () => {
                 </div>
 
                 {/* PROGRESS */}
-
                 <div>
                   <div className="flex justify-between text-xs mb-2">
                     <span className="text-gray-500">Progress</span>
@@ -105,13 +104,13 @@ const StudentCourses = () => {
                         bg-gradient-to-r
                         from-purple-500
                         to-indigo-500
+                        transition-all duration-500
                       "
                     />
                   </div>
                 </div>
 
                 {/* CONTINUE BUTTON */}
-
                 <Link
                   to={`/student/course/${course._id}`}
                   className="
@@ -132,7 +131,7 @@ const StudentCourses = () => {
                   "
                 >
                   <PlayCircle size={16} />
-                  Continue Learning
+                  {progress > 0 ? "Continue Learning" : "Start Learning"}
                 </Link>
               </div>
             </motion.div>

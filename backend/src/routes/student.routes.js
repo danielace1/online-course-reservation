@@ -5,6 +5,7 @@ import {
   getMyCourses,
   getMyPayments,
   getPaymentById,
+  getStudentDashboardData,
 } from "../controllers/student.controller.js";
 
 const router = express.Router();
@@ -15,7 +16,8 @@ router.use(authMiddleware, roleMiddleware("student"));
 // Courses
 router.get("/courses", getMyCourses);
 
-// Reservations
+// stats
+router.get("/dashboard", getStudentDashboardData);
 
 // Payments
 router.get("/payments", getMyPayments);

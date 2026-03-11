@@ -5,7 +5,6 @@ import optionalAuth from "../middleware/optionalAuth.middleware.js";
 import {
   createCourse,
   updateCourse,
-  publishCourse,
   getAllCourses,
   getCourseById,
   getInstructorCourses,
@@ -32,13 +31,6 @@ router.put(
   authMiddleware,
   roleMiddleware("instructor", "admin"),
   updateCourse,
-);
-
-router.put(
-  "/publish/:id",
-  authMiddleware,
-  roleMiddleware("instructor", "admin"),
-  publishCourse,
 );
 
 router.delete(

@@ -84,6 +84,7 @@ export const updateCourse = async (req, res) => {
       discount,
       image,
       learningPoints,
+      isPublished,
     } = req.body;
 
     const course = await Course.findById(courseId);
@@ -130,6 +131,7 @@ export const updateCourse = async (req, res) => {
         finalFee,
         image: imageUrl,
         learningPoints,
+        isPublished: isPublished ?? course.isPublished,
       },
       { new: true },
     );
@@ -140,26 +142,6 @@ export const updateCourse = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in updateCourse: ", error);
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-};
-
-export const publishCourse = async (req, res) => {
-  try {
-    const course = await Course.findByIdAndUpdate(
-      req.params.id,
-      { isPublished: true },
-      { new: true },
-    );
-
-    res.status(200).json({
-      message: "Course published",
-      course,
-    });
-  } catch (error) {
-    console.log("Error in publishCourse: ", error);
     res.status(500).json({
       message: error.message,
     });

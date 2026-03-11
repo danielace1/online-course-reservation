@@ -27,6 +27,8 @@ import AddCourseContent from "./pages/instructor/AddCourseContent";
 import ManageCourse from "./pages/instructor/ManageCourse";
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import StudentCoursePlayer from "./pages/student/StudentCoursePlayer";
+import ManageStudents from "./pages/instructor/ManageStudents";
 
 const App = () => {
   const { checkAuth } = useAuthStore();
@@ -68,6 +70,10 @@ const App = () => {
         >
           <Route path="/student/dashboard" element={<StudentDashboard />} />
           <Route path="/student/my-courses" element={<StudentCourses />} />
+          <Route
+            path="/student/course/:courseId"
+            element={<StudentCoursePlayer />}
+          />
         </Route>
 
         {/* Instructor Dashboard */}
@@ -94,6 +100,8 @@ const App = () => {
             path="/instructor/courses/:courseId/manage"
             element={<ManageCourse />}
           />
+
+          <Route path="/instructor/students" element={<ManageStudents />} />
         </Route>
 
         {/* Admin Dashboard */}

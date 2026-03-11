@@ -9,6 +9,7 @@ import {
   FileVideo,
   FileText,
   Link,
+  Clock,
 } from "lucide-react";
 
 import { useCourseStore } from "../../store/useCourseStore";
@@ -155,6 +156,10 @@ const ManageCourse = () => {
 
                 <div className="text-xs text-gray-500 flex gap-3 mt-1">
                   <span className="capitalize">{lecture.type}</span>
+                  <span>•</span>
+                  <span className="flex items-center gap-1">
+                    <Clock size={12} /> {lecture.duration || "N/A"}
+                  </span>
 
                   {lecture.isFreePreview && (
                     <span className="text-green-600 font-medium">

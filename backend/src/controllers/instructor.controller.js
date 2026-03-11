@@ -1,6 +1,7 @@
 import Payment from "../models/payment.model.js";
 import Course from "../models/course.model.js";
 import Reservation from "../models/reservation.model.js";
+import Progress from "../models/progress.model.js";
 
 export const getInstructorRevenue = async (req, res) => {
   const payments = await Payment.find({
@@ -86,5 +87,106 @@ export const getCourseStudents = async (req, res) => {
     res.status(500).json({
       message: error.message,
     });
+  }
+};
+
+export const getInstructorDashboardStats = async (req, res) => {
+  try {
+    const instructorId = req.user._id;
+
+    const courses = await Course.find({ instructor: instructorId });
+    const courseIds = courses.map((c) => c._id);
+
+    const enrollments = await Reservation.find({
+      course: { $in: courseIds },
+      status: "active",
+    })
+      .populate("student", "username email")
+      .populate("course", "title");
+
+    const payments = await Payment.find({
+      course: { $in: courseIds },
+      status: "success",
+    });
+    const totalEarnings = payments.reduce((sum, p) => sum + p.amount, 0);
+
+    const recentEnrollments = enrollments
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .slice(0, 5)
+      .map((e) => ({
+        studentName: e.student?.username || "A student",
+        courseName: e.course?.title,
+        time: e.createdAt,
+      }));
+
+    res.status(200).json({
+      stats: [
+        {
+          title: "Total Courses",
+          value: courses.length.toString().padStart(2, "0"),
+        },
+        { title: "Total Students", value: enrollments.length.toLocaleString() },
+        { title: "Revenue", value: `₹${totalEarnings.toLocaleString()}` },
+        { title: "Enrollment Rate", value: "85%" }, // Logic can be added later
+      ],
+      coursePerformance: courses
+        .map((c) => ({
+          name: c.title,
+          students: enrollments.filter(
+            (e) => e.course._id.toString() === c._id.toString(),
+          ).length,
+        }))
+        .sort((a, b) => b.students - a.students)
+        .slice(0, 4),
+      recentEnrollments,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getInstructorStudents = async (req, res) => {
+  try {
+    const instructorId = req.user._id;
+
+    // 1. Get all courses by this instructor
+    const courses = await Course.find({ instructor: instructorId }).select(
+      "_id title",
+    );
+    const courseIds = courses.map((c) => c._id);
+
+    // 2. Find all active reservations for these courses
+    const enrollments = await Reservation.find({
+      course: { $in: courseIds },
+      status: "active",
+    })
+      .populate("student", "username email profilePic")
+      .populate("course", "title")
+      .sort({ createdAt: -1 });
+
+    // 3. For each enrollment, fetch the current progress percentage
+    const studentsWithProgress = await Promise.all(
+      enrollments.map(async (enrol) => {
+        const progress = await Progress.findOne({
+          student: enrol.student._id,
+          course: enrol.course._id,
+        });
+
+        return {
+          id: enrol._id,
+          studentName: enrol.student?.username || "Unknown",
+          email: enrol.student?.email,
+          avatar: enrol.student?.profilePic,
+          courseName: enrol.course?.title,
+          enrollmentDate: enrol.createdAt,
+          progress: progress ? progress.completedPercentage : 0,
+          status: progress?.status || "in-progress",
+        };
+      }),
+    );
+
+    res.status(200).json(studentsWithProgress);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

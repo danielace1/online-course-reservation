@@ -24,6 +24,11 @@ const courseContentSchema = new mongoose.Schema(
       required: true,
     },
 
+    duration: {
+      type: String,
+      required: true,
+    },
+
     thumbnail: {
       type: String,
       default: "",

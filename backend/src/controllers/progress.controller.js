@@ -142,6 +142,28 @@ export const getMyProgress = async (req, res) => {
       course: req.params.courseId,
     });
 
+    if (!progress) {
+      const reservation = await Reservation.findOne({
+        student: req.user._id,
+        course: req.params.courseId,
+        status: "active",
+      });
+
+      if (!reservation) {
+        return res
+          .status(403)
+          .json({ message: "You are not enrolled in this course." });
+      }
+
+      progress = await Progress.create({
+        student: req.user._id,
+        course: req.params.courseId,
+        reservation: reservation._id,
+        completedPercentage: 0,
+        status: "in-progress",
+      });
+    }
+
     res.status(200).json(progress);
   } catch (error) {
     res.status(500).json({ message: error.message });

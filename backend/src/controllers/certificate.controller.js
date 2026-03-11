@@ -46,7 +46,13 @@ export const issueCertificate = async (req, res) => {
       certificateNumber,
     );
 
-    await sendCertificateMail(user.email, buffer, certificateNumber);
+    await sendCertificateMail(
+      user.email,
+      buffer,
+      certificateNumber,
+      course.title,
+      user.username,
+    );
 
     const certificate = await Certificate.create({
       student: user._id,

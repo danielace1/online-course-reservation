@@ -16,6 +16,7 @@ const EditCourseModal = ({ course, close, courseId }) => {
     fee: course.fee || "",
     discount: course.discount || "",
     image: "",
+    isPublished: course.isPublished || false,
   });
 
   const [preview, setPreview] = useState(course.image);
@@ -220,15 +221,41 @@ const EditCourseModal = ({ course, close, courseId }) => {
           </div>
 
           {/* DISCOUNT */}
-          <div>
-            <label className={labelStyle}>Discount (%)</label>
+          <div className="p-6 space-y-6 overflow-y-auto flex-1">
+            {/* ... (keep Image, Title, Description, Learning Points) */}
 
-            <input
-              type="number"
-              value={form.discount}
-              onChange={(e) => setForm({ ...form, discount: e.target.value })}
-              className={inputStyle}
-            />
+            {/* DISCOUNT + PUBLISH STATUS */}
+            <div className="grid grid-cols-2 gap-4 items-end">
+              <div>
+                <label className={labelStyle}>Discount (%)</label>
+                <input
+                  type="number"
+                  value={form.discount}
+                  onChange={(e) =>
+                    setForm({ ...form, discount: e.target.value })
+                  }
+                  className={inputStyle}
+                />
+              </div>
+
+              {/* IS PUBLISHED TOGGLE */}
+              <div className="flex items-center gap-3 pb-3">
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="sr-only peer"
+                    checked={form.isPublished}
+                    onChange={(e) =>
+                      setForm({ ...form, isPublished: e.target.checked })
+                    }
+                  />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                  <span className="ml-3 text-sm font-medium text-gray-700">
+                    {form.isPublished ? "Published" : "Draft Mode"}
+                  </span>
+                </label>
+              </div>
+            </div>
           </div>
         </div>
 
