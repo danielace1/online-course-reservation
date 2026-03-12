@@ -19,7 +19,7 @@ const StudentCourses = () => {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-semibold">My Learning</h1>
+      <h1 className="text-2xl font-black">My Learning</h1>
 
       <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-8 transition">
         {courses.map((item, index) => {

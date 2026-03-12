@@ -29,6 +29,10 @@ import ManageCourse from "./pages/instructor/ManageCourse";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import StudentCoursePlayer from "./pages/student/StudentCoursePlayer";
 import ManageStudents from "./pages/instructor/ManageStudents";
+import InstructorAnalytics from "./pages/instructor/InstructorAnalytics";
+import InstructorSettings from "./pages/instructor/InstructorSettings";
+import StudentProfile from "./pages/student/StudentProfile";
+import StudentSettings from "./pages/student/StudentSettings";
 
 const App = () => {
   const { checkAuth } = useAuthStore();
@@ -60,7 +64,7 @@ const App = () => {
         <Route path="/checkout/:courseId" element={<Checkout />} />
         <Route path="/about" element={<About />} />
 
-        {/* Student Dashboard */}
+        {/* Student */}
         <Route
           element={
             <ProtectedRoute allowedRoles={["student"]}>
@@ -74,9 +78,11 @@ const App = () => {
             path="/student/course/:courseId"
             element={<StudentCoursePlayer />}
           />
+          <Route path="/student/profile" element={<StudentProfile />} />
+          <Route path="/student/settings" element={<StudentSettings />} />
         </Route>
 
-        {/* Instructor Dashboard */}
+        {/* Instructor */}
         <Route
           element={
             <ProtectedRoute allowedRoles={["instructor"]}>
@@ -102,9 +108,14 @@ const App = () => {
           />
 
           <Route path="/instructor/students" element={<ManageStudents />} />
+          <Route
+            path="/instructor/analytics"
+            element={<InstructorAnalytics />}
+          />
+          <Route path="/instructor/settings" element={<InstructorSettings />} />
         </Route>
 
-        {/* Admin Dashboard */}
+        {/* Admin */}
         <Route
           path="/admin/dashboard"
           element={

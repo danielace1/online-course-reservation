@@ -1,6 +1,8 @@
 import Payment from "../models/payment.model.js";
 import Reservation from "../models/reservation.model.js";
 import Progress from "../models/progress.model.js";
+import Course from "../models/course.model.js";
+import Notification from "../models/notification.model.js";
 
 export const getMyCourses = async (req, res) => {
   try {
@@ -101,6 +103,74 @@ export const getStudentDashboardData = async (req, res) => {
       })),
       activities: recentActivities,
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getStudentProfileData = async (req, res) => {
+  try {
+    const studentId = req.user._id;
+
+    const enrollments = await Reservation.find({
+      student: studentId,
+      status: "active",
+    })
+      .populate("course", "title image category instructor")
+      .sort({ createdAt: -1 });
+
+    const payments = await Payment.find({ user: studentId })
+      .populate("course", "title")
+      .sort({ createdAt: -1 });
+
+    const progressRecords = await Progress.find({ student: studentId });
+    const completedCourses = progressRecords.filter(
+      (p) => p.status === "completed",
+    ).length;
+
+    res.status(200).json({
+      enrollments,
+      payments,
+      stats: {
+        totalEnrolled: enrollments.length,
+        completed: completedCourses,
+        totalSpent: payments
+          .filter((p) => p.status === "success")
+          .reduce((acc, curr) => acc + curr.amount, 0),
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const studentGlobalSearch = async (req, res) => {
+  try {
+    const { query } = req.query;
+
+    const courses = await Course.find({
+      isPublished: true,
+      title: { $regex: query, $options: "i" },
+    })
+      .select("title image category finalFee")
+      .limit(4);
+
+    const categories = await Course.distinct("category", {
+      category: { $regex: query, $options: "i" },
+    });
+
+    res.json({ courses, categories });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getStudentNotifications = async (req, res) => {
+  try {
+    const notifications = await Notification.find({ recipient: req.user._id })
+      .sort({ createdAt: -1 })
+      .limit(10);
+    res.status(200).json(notifications);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
