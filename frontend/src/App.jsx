@@ -31,6 +31,8 @@ import StudentCoursePlayer from "./pages/student/StudentCoursePlayer";
 import ManageStudents from "./pages/instructor/ManageStudents";
 import InstructorAnalytics from "./pages/instructor/InstructorAnalytics";
 import InstructorSettings from "./pages/instructor/InstructorSettings";
+import StudentProfile from "./pages/student/StudentProfile";
+import StudentSettings from "./pages/student/StudentSettings";
 
 const App = () => {
   const { checkAuth } = useAuthStore();
@@ -76,6 +78,8 @@ const App = () => {
             path="/student/course/:courseId"
             element={<StudentCoursePlayer />}
           />
+          <Route path="/student/profile" element={<StudentProfile />} />
+          <Route path="/student/settings" element={<StudentSettings />} />
         </Route>
 
         {/* Instructor */}

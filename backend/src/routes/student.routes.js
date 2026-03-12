@@ -6,11 +6,13 @@ import {
   getMyPayments,
   getPaymentById,
   getStudentDashboardData,
+  getStudentNotifications,
+  getStudentProfileData,
+  studentGlobalSearch,
 } from "../controllers/student.controller.js";
 
 const router = express.Router();
 
-// Student access only
 router.use(authMiddleware, roleMiddleware("student"));
 
 // Courses
@@ -18,6 +20,9 @@ router.get("/courses", getMyCourses);
 
 // stats
 router.get("/dashboard", getStudentDashboardData);
+router.get("/profile-data", getStudentProfileData);
+router.get("/search", authMiddleware, studentGlobalSearch);
+router.get("/notifications", authMiddleware, getStudentNotifications);
 
 // Payments
 router.get("/payments", getMyPayments);
